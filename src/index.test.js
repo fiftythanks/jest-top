@@ -1,4 +1,4 @@
-import { capitalize, reverseString, calculator } from './index';
+import { capitalize, reverseString, calculator, caesarCipher } from './index';
 
 describe('capitalize', () => {
   it('returns capitalized input string', () => {
@@ -66,5 +66,82 @@ describe('calculator', () => {
       expect(() => calculator.multiply('string')).toThrow();
       expect(() => calculator.multiply('string', 'string')).toThrow();
     });
+  });
+});
+
+describe("Caesar's cipher", () => {
+  it('works with an empty string', () => {
+    expect(caesarCipher('', 5)).toBe('');
+  });
+
+  describe('One letter', () => {
+    it('returns a letter provided shift times farther in the English alphabet than the provided letter', () => {
+      expect(caesarCipher('a', 5)).toBe('f');
+      expect(caesarCipher('c', 9)).toBe('l');
+    });
+    it('accepts uppercase', () => {
+      expect(caesarCipher('A', 5)).toBe('F');
+      expect(caesarCipher('C', 9)).toBe('L');
+    });
+    it('wraps when the shift goes beyond the length of the alphabet', () => {
+      expect(caesarCipher('a', 28)).toBe('c');
+      expect(caesarCipher('A', 28)).toBe('C');
+    });
+  });
+
+  describe('Random amount of letters', () => {
+    it('works for three random letters', () => {
+      expect(caesarCipher('aBC', 5)).toBe('fGH');
+      expect(caesarCipher('jhU', 10)).toBe('trE');
+    });
+
+    it('works for 14 random letters', () => {
+      expect(caesarCipher('tesTyfEstyBems', 47)).toBe('oznOtaZnotWzhn');
+    });
+    it('works for 28 random letters', () => {
+      expect(caesarCipher('sadfasSAFAFasdzfqwerpFDSlafd', 0)).toBe(
+        'sadfasSAFAFasdzfqwerpFDSlafd',
+      );
+      expect(caesarCipher('sadfasSAFAFasdzfqwerpFDSlafd', 1)).toBe(
+        'tbegbtTBGBGbteagrxfsqGETmbge',
+      );
+    });
+  });
+
+  describe('Text', () => {
+    it("whatever isn't an English letter is returned as is", () => {
+      expect(
+        caesarCipher(
+          "it('returns a letter provided shift times farther in the English alphabet than the provided letter', () => {\nexpect(caesarCipher('a', 5)).toBe('f');\nexpect(caesarCipher('c', 9)).toBe('l');\n});",
+          2,
+        ),
+      ).toBe(
+        "kv('tgvwtpu c ngvvgt rtqxkfgf ujkhv vkogu hctvjgt kp vjg Gpinkuj cnrjcdgv vjcp vjg rtqxkfgf ngvvgt', () => {\ngzrgev(ecguctEkrjgt('c', 5)).vqDg('h');\ngzrgev(ecguctEkrjgt('e', 9)).vqDg('n');\n});",
+      );
+    });
+  });
+
+  it('throws if the first argument is not a string', () => {
+    expect(() => caesarCipher(null, 5)).toThrow();
+    expect(() => caesarCipher(undefined, 5)).toThrow();
+    expect(() => caesarCipher(true, 5)).toThrow();
+    expect(() => caesarCipher(9007199254740991n, 5)).toThrow();
+    expect(() => caesarCipher(Symbol('a'), 5)).toThrow();
+    expect(() => caesarCipher({ property: 'property' }, 5)).toThrow();
+    expect(() => caesarCipher([1, 2])).toThrow();
+    expect(() => caesarCipher(new Map({ key: 'value' }))).toThrow();
+    expect(() => caesarCipher(new Set([1, 2]))).toThrow();
+  });
+
+  it('throws if the second argument is not an integer', () => {
+    expect(() => caesarCipher('a', null)).toThrow();
+    expect(() => caesarCipher('a', undefined)).toThrow();
+    expect(() => caesarCipher('a', false)).toThrow();
+    expect(() => caesarCipher('a', 9007199254740991n)).toThrow();
+    expect(() => caesarCipher('a', Symbol(5))).toThrow();
+    expect(() => caesarCipher('a', { 1: '5' })).toThrow();
+    expect(() => caesarCipher('a', [1])).toThrow();
+    expect(() => caesarCipher('a', new Map({ 1: '1' }))).toThrow();
+    expect(() => caesarCipher('a', new Set([1]))).toThrow();
   });
 });
