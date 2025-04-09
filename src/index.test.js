@@ -1,4 +1,10 @@
-import { capitalize, reverseString, calculator, caesarCipher } from './index';
+import {
+  capitalize,
+  reverseString,
+  calculator,
+  caesarCipher,
+  analyzeArray,
+} from './index';
 
 describe('capitalize', () => {
   it('returns capitalized input string', () => {
@@ -143,5 +149,32 @@ describe("Caesar's cipher", () => {
     expect(() => caesarCipher('a', [1])).toThrow();
     expect(() => caesarCipher('a', new Map({ 1: '1' }))).toThrow();
     expect(() => caesarCipher('a', new Set([1]))).toThrow();
+  });
+});
+
+// An analyzeArray function that takes an array of numbers and returns an object with the following properties: average, min, max, and length. And it will be rounded to two numbers to the right of the decimal point
+
+describe('analyzeArray', () => {
+  test('the average property', () => {
+    // (1 + 55 + 9) / 3 =
+    expect(analyzeArray([1, 55, 9]).average).toBe(21.67);
+  });
+
+  test('the min property', () => {
+    expect(analyzeArray([25, 55, 9]).min).toBe(9);
+  });
+
+  test('the max property', () => {
+    expect(analyzeArray([25, 1, 0, 99, 4]).max).toBe(99);
+  });
+
+  test('the length property', () => {
+    expect(analyzeArray([15, 4, 2, 0, 15]).length).toBe(5);
+  });
+
+  it('throws if the array includes non-number elements or if the input is not an array at all', () => {
+    expect(() => analyzeArray(['f', 2])).toThrow();
+    expect(() => analyzeArray('t')).toThrow();
+    expect(() => analyzeArray(5)).toThrow();
   });
 });

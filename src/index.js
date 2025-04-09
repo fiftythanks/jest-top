@@ -75,3 +75,20 @@ export function caesarCipher(string, shift) {
   });
   return output;
 }
+
+export function analyzeArray(arr) {
+  if (!Array.isArray(arr)) throw new Error('Input must be an array!');
+  arr.forEach((item) => {
+    if (typeof item !== 'number')
+      throw new Error('Input must be an array of numbers only!');
+  });
+
+  return {
+    average: Number(
+      (arr.reduce((sum, num) => sum + num, 0) / arr.length).toFixed(2),
+    ),
+    min: arr.sort((a, b) => a - b)[0],
+    max: arr.sort((a, b) => b - a)[0],
+    length: arr.length,
+  };
+}
